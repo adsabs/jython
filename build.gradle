@@ -669,7 +669,7 @@ jar {
  */
 // XXX Consider instead a multi-project build with one artefact per sub-project.
 task testJar(type: Jar) {
-    classifier = 'tests'
+    archiveClassifier = 'tests'
 
     from sourceSets.test.output
     // We don't JAR the expose tool, so we don't JAR the tests
@@ -719,12 +719,12 @@ javadoc {
  */
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allJava
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
     from javadoc.destinationDir
 }
 
