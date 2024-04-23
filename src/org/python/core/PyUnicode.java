@@ -1765,11 +1765,14 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
     @ExposedMethod(defaults = {"null", "-1"}, doc = BuiltinDocs.unicode_split_doc)
     final PyList unicode_split(PyObject sepObj, int maxsplit) {
         String sep = coerceToString(sepObj, true);
-        if (sep != null) {
-            return _split(sep, maxsplit);
-        } else {
-            return _split(null, maxsplit);
+        PyUnicode pySep = sep != null ? fromString(sep, false) : null;
+        SplitIterator iter = newSplitIterator(pySep, maxsplit);
+        // Collect results into a PyList
+        PyList list = new PyList();
+        while (iter.hasNext()) {
+            list.append(iter.next());
         }
+        return list;
     }
 
     /**
