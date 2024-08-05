@@ -1706,6 +1706,12 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         public PyUnicode next() {
             StringBuilder buffer = new StringBuilder();
 
+            if (!lookahead.isEmpty() && !iter.hasNext()) {
+                numSplits++;
+                lookahead.clear();
+                return new PyUnicode(buffer);
+            }
+
             addLookahead(buffer);
             if (numSplits == maxsplit) {
                 while (iter.hasNext()) {
@@ -1730,7 +1736,9 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
                     }
                 }
 
-                if (inSeparator) {
+                // Leave the separator in the lookahead buffer if there are no further code points
+                // This signals that the string ends with the separator, and that we should output an extra empty split
+                if (inSeparator && iter.hasNext()) {
                     lookahead.clear();
                     break;
                 }
@@ -1767,11 +1775,13 @@ public class PyUnicode extends PyString implements Iterable<Integer> {
         String sep = coerceToString(sepObj, true);
         PyUnicode pySep = sep != null ? fromString(sep, false) : null;
         SplitIterator iter = newSplitIterator(pySep, maxsplit);
+
         // Collect results into a PyList
         PyList list = new PyList();
         while (iter.hasNext()) {
             list.append(iter.next());
         }
+
         return list;
     }
 
