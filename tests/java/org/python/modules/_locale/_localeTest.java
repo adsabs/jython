@@ -295,7 +295,7 @@ public class _localeTest {
                 + "'decimal_point': '.', 'int_curr_symbol': 'CNY', "
                 + "'n_cs_precedes': 1, 'p_sign_posn': 3, "
                 + "'mon_thousands_sep': ',', 'negative_sign': '-', "
-                + "'currency_symbol':  '\\xef\\xbf\\xa5' , "
+                + "'currency_symbol':  '\\xc2\\xa5' , "
                 + "'n_sep_by_space': 0, "
                 + "'p_cs_precedes': 1, 'positive_sign': ''} \n"
                 + "actual = localeconv() \n"
